@@ -1,0 +1,10 @@
+author: JoshuaKGoldberg
+description: GitHub Action that outputs whether the package.json file changed. 👛
+inputs:
+  properties:
+    description: The list of properties to check for changes in package.json.
+    required: true
+name: package-change-detector-action
+runs:
+  main: dist/index.js
+  using: node20
