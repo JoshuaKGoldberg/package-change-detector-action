@@ -20,14 +20,17 @@
 
 ## Usage
 
-```shell
-npm i package-change-detector-action
-```
+Use this action in your GitHub Actions steps to check whether specific `package.json` properties changed.
 
-```ts
-import { greet } from "package-change-detector-action";
-
-greet("Hello, world! 💖");
+```yml
+runs:
+  steps:
+    - id: package-change
+      uses: JoshuaKGoldberg/package-change-detector-action@0.0.0
+      with:
+        properties: engines
+    - run: echo "${{ steps.package-change.outputs.changed }}"
+      shell: bash
 ```
 
 ## Development
