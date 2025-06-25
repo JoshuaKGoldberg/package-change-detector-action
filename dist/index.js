@@ -29819,7 +29819,7 @@ function wrappy (fn, cb) {
 __nccwpck_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(5380);
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_github__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _runPackageChangeDetectorAction_js__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(6973);
+/* harmony import */ var _runPackageChangeDetectorAction_js__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(398);
 
 
 await (0,_runPackageChangeDetectorAction_js__WEBPACK_IMPORTED_MODULE_1__/* .runPackageChangeDetectorAction */ .g)(_actions_github__WEBPACK_IMPORTED_MODULE_0__.context);
@@ -29829,7 +29829,7 @@ __webpack_async_result__();
 
 /***/ }),
 
-/***/ 6973:
+/***/ 398:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 
@@ -29840,6 +29840,19 @@ __nccwpck_require__.d(__webpack_exports__, {
 
 // EXTERNAL MODULE: ./node_modules/.pnpm/@actions+core@1.11.1/node_modules/@actions/core/lib/core.js
 var core = __nccwpck_require__(9999);
+;// CONCATENATED MODULE: external "node:process"
+const external_node_process_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:process");
+;// CONCATENATED MODULE: ./src/getTokenInput.ts
+
+
+function getTokenInput(name, backup) {
+    const token = core.getInput(name) || external_node_process_namespaceObject.env[backup];
+    if (!token) {
+        throw new Error(`No ${name} input or ${backup} environment variable defined.`);
+    }
+    return token;
+}
+
 // EXTERNAL MODULE: ./node_modules/.pnpm/@actions+github@6.0.1/node_modules/@actions/github/lib/github.js
 var github = __nccwpck_require__(5380);
 // EXTERNAL MODULE: external "node:util"
@@ -29847,24 +29860,38 @@ var external_node_util_ = __nccwpck_require__(7975);
 ;// CONCATENATED MODULE: ./src/index.ts
 
 
-async function packageChangeDetectorAction({ properties, }) {
+async function packageChangeDetectorAction({ owner, properties, refPrevious, refUpdated, repo, }) {
     console.log("sha:", github.context.sha);
     console.log("context:", github.context);
-    // 1. Get current version of package.json
-    // 2. Get previous version of package.json
-    // TODO
-    const currentPackageJson = await Promise.resolve({});
-    const updatedPackageJson = await Promise.resolve({});
-    return properties.some((property) => !external_node_util_.isDeepStrictEqual(currentPackageJson[property], updatedPackageJson[property]));
+    const [packageJsonPrevious, packageJsonUpdated] = await Promise.all([
+        getPackageJsonAt(refPrevious),
+        getPackageJsonAt(refUpdated),
+    ]);
+    return properties.some((property) => !external_node_util_.isDeepStrictEqual(packageJsonPrevious[property], packageJsonUpdated[property]));
+    async function getPackageJsonAt(ref) {
+        const response = await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/${ref}/package.json`);
+        return JSON.parse(await response.text());
+    }
 }
 
 ;// CONCATENATED MODULE: ./src/action/runPackageChangeDetectorAction.ts
 
 
+
 async function runPackageChangeDetectorAction(context) {
     const properties = core.getMultilineInput("properties");
+    const { after, before } = context.payload;
+    if (typeof before !== "string" || typeof after !== "string") {
+        core.setFailed("This action can only be used in an event with 'after' and 'before' refs.");
+        return;
+    }
     await packageChangeDetectorAction({
+        githubToken: getTokenInput("github-token", "GITHUB_TOKEN"),
+        owner: context.repo.owner,
         properties,
+        refPrevious: after,
+        refUpdated: before,
+        repo: context.repo.repo,
     });
 }
 
