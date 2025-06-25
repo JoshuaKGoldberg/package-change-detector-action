@@ -6,4 +6,4 @@ export interface PackageChangeDetectorActionOptions {
     refUpdated: string;
     repo: string;
 }
-export declare function packageChangeDetectorAction({ owner, properties, refPrevious, refUpdated, repo, }: PackageChangeDetectorActionOptions): Promise<boolean>;
+export declare function packageChangeDetectorAction({ owner, properties, refPrevious, refUpdated, repo, }: PackageChangeDetectorActionOptions): Promise<void>;

@@ -1,3 +1,4 @@
+import * as core from "@actions/core";
 import * as github from "@actions/github";
 import * as util from "node:util";
 
@@ -25,13 +26,15 @@ export async function packageChangeDetectorAction({
 		getPackageJsonAt(refUpdated),
 	]);
 
-	return properties.some(
+	const changed = properties.some(
 		(property) =>
 			!util.isDeepStrictEqual(
 				packageJsonPrevious[property],
 				packageJsonUpdated[property],
 			),
 	);
+
+	core.setOutput("changed", changed.toString());
 
 	async function getPackageJsonAt(ref: string) {
 		const response = await fetch(

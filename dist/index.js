@@ -29860,6 +29860,7 @@ var external_node_util_ = __nccwpck_require__(7975);
 ;// CONCATENATED MODULE: ./src/index.ts
 
 
+
 async function packageChangeDetectorAction({ owner, properties, refPrevious, refUpdated, repo, }) {
     console.log("sha:", github.context.sha);
     console.log("context:", github.context);
@@ -29867,7 +29868,8 @@ async function packageChangeDetectorAction({ owner, properties, refPrevious, ref
         getPackageJsonAt(refPrevious),
         getPackageJsonAt(refUpdated),
     ]);
-    return properties.some((property) => !external_node_util_.isDeepStrictEqual(packageJsonPrevious[property], packageJsonUpdated[property]));
+    const changed = properties.some((property) => !external_node_util_.isDeepStrictEqual(packageJsonPrevious[property], packageJsonUpdated[property]));
+    core.setOutput("changed", changed.toString());
     async function getPackageJsonAt(ref) {
         const response = await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/${ref}/package.json`);
         return JSON.parse(await response.text());
