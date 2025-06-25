@@ -20,7 +20,8 @@
 
 ## Usage
 
-Use this action in your GitHub Actions steps to check whether specific `package.json` properties changed.
+This action may be run in a `pull_request` or `pull_request_target` workflow.
+It will populate an `outputs.changed` value indicating whether specific `package.json` properties were changed in the pull request.
 
 ```yml
 runs:
