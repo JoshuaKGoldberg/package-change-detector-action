@@ -18,7 +18,7 @@ export async function runPackageChangeDetectorAction(
 		return;
 	}
 
-	console.log({ context });
+	console.log({ context }, "with context.payload", context.payload);
 
 	await packageChangeDetectorAction({
 		// githubToken: getTokenInput("github-token", "GITHUB_TOKEN"),

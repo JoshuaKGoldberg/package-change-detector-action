@@ -29873,7 +29873,7 @@ async function runPackageChangeDetectorAction(context) {
         core.setFailed("This action can only be used in an event with 'after' and 'before' refs.");
         return;
     }
-    console.log({ context });
+    console.log({ context }, "with context.payload", context.payload);
     await packageChangeDetectorAction({
         // githubToken: getTokenInput("github-token", "GITHUB_TOKEN"),
         owner: context.repo.owner,
