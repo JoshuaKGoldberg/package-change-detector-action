@@ -1,6 +1,6 @@
 {
 	"name": "package-change-detector-action",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"description": "GitHub Action that outputs whether the package.json file changed. 👛",
 	"repository": {
 		"type": "git",
