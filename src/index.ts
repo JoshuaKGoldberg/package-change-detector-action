@@ -18,8 +18,7 @@ export async function packageChangeDetectorAction({
 	refUpdated,
 	repo,
 }: PackageChangeDetectorActionOptions) {
-	console.log("sha:", github.context.sha);
-	console.log("context:", github.context);
+	core.debug(`Comparing package.json at ${refPrevious} and ${refUpdated}`);
 
 	const [packageJsonPrevious, packageJsonUpdated] = await Promise.all([
 		getPackageJsonAt(refPrevious),
@@ -41,6 +40,10 @@ export async function packageChangeDetectorAction({
 			`https://raw.githubusercontent.com/${owner}/${repo}/${ref}/package.json`,
 		);
 
-		return JSON.parse(await response.text()) as Record<string, unknown>;
+		const body = await response.text();
+
+		core.debug(`Body at ${ref}: ${body}`);
+
+		return JSON.parse(body) as Record<string, unknown>;
 	}
 }

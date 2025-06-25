@@ -29853,17 +29853,13 @@ function getTokenInput(name, backup) {
     return token;
 }
 
-// EXTERNAL MODULE: ./node_modules/.pnpm/@actions+github@6.0.1/node_modules/@actions/github/lib/github.js
-var github = __nccwpck_require__(5380);
 // EXTERNAL MODULE: external "node:util"
 var external_node_util_ = __nccwpck_require__(7975);
 ;// CONCATENATED MODULE: ./src/index.ts
 
 
-
 async function packageChangeDetectorAction({ owner, properties, refPrevious, refUpdated, repo, }) {
-    console.log("sha:", github.context.sha);
-    console.log("context:", github.context);
+    core.debug(`Comparing package.json at ${refPrevious} and ${refUpdated}`);
     const [packageJsonPrevious, packageJsonUpdated] = await Promise.all([
         getPackageJsonAt(refPrevious),
         getPackageJsonAt(refUpdated),
@@ -29872,7 +29868,9 @@ async function packageChangeDetectorAction({ owner, properties, refPrevious, ref
     core.setOutput("changed", changed.toString());
     async function getPackageJsonAt(ref) {
         const response = await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/${ref}/package.json`);
-        return JSON.parse(await response.text());
+        const body = await response.text();
+        core.debug(`Body at ${ref}: ${body}`);
+        return JSON.parse(body);
     }
 }
 
