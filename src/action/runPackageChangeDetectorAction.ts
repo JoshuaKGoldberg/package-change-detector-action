@@ -18,6 +18,8 @@ export async function runPackageChangeDetectorAction(
 		return;
 	}
 
+	console.log({ context });
+
 	await packageChangeDetectorAction({
 		// githubToken: getTokenInput("github-token", "GITHUB_TOKEN"),
 		owner: context.repo.owner,
