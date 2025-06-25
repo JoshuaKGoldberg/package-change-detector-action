@@ -1,7 +1,6 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
 
-// import { getTokenInput } from "../getTokenInput.js";
 import { packageChangeDetectorAction } from "../index.js";
 
 interface PayloadData {
@@ -35,14 +34,7 @@ export async function runPackageChangeDetectorAction(
 		return;
 	}
 
-	console.log(
-		{ context, refBase, refHead },
-		"with context.payload",
-		context.payload,
-	);
-
 	await packageChangeDetectorAction({
-		// githubToken: getTokenInput("github-token", "GITHUB_TOKEN"),
 		owner: context.repo.owner,
 		properties,
 		refBase,

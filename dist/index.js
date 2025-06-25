@@ -29852,7 +29852,11 @@ async function packageChangeDetectorAction({ owner, properties, refBase, refHead
         getPackageJsonAt(refBase),
         getPackageJsonAt(refHead),
     ]);
-    const changed = properties.some((property) => !external_node_util_.isDeepStrictEqual(packageJsonPrevious[property], packageJsonUpdated[property]));
+    const propertyKeys = properties
+        .flatMap((property) => property.split(/\n,/))
+        .filter(Boolean);
+    console.log("comparing:", { properties, propertyKeys });
+    const changed = propertyKeys.some((propertyKey) => !external_node_util_.isDeepStrictEqual(packageJsonPrevious[propertyKey], packageJsonUpdated[propertyKey]));
     core.setOutput("changed", changed.toString());
     async function getPackageJsonAt(ref) {
         const response = await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/${ref}/package.json`);
@@ -29864,7 +29868,6 @@ async function packageChangeDetectorAction({ owner, properties, refBase, refHead
 
 ;// CONCATENATED MODULE: ./src/action/runPackageChangeDetectorAction.ts
 
-// import { getTokenInput } from "../getTokenInput.js";
 
 async function runPackageChangeDetectorAction(context) {
     const properties = core.getMultilineInput("properties");
@@ -29884,9 +29887,7 @@ async function runPackageChangeDetectorAction(context) {
         core.setFailed("The payload head SHA must be a string.");
         return;
     }
-    console.log({ context, refBase, refHead }, "with context.payload", context.payload);
     await packageChangeDetectorAction({
-        // githubToken: getTokenInput("github-token", "GITHUB_TOKEN"),
         owner: context.repo.owner,
         properties,
         refBase,

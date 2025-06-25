@@ -25,11 +25,17 @@ export async function packageChangeDetectorAction({
 		getPackageJsonAt(refHead),
 	]);
 
-	const changed = properties.some(
-		(property) =>
+	const propertyKeys = properties
+		.flatMap((property) => property.split(/\n,/))
+		.filter(Boolean);
+
+	console.log("comparing:", { properties, propertyKeys });
+
+	const changed = propertyKeys.some(
+		(propertyKey) =>
 			!util.isDeepStrictEqual(
-				packageJsonPrevious[property],
-				packageJsonUpdated[property],
+				packageJsonPrevious[propertyKey],
+				packageJsonUpdated[propertyKey],
 			),
 	);
 
