@@ -1,7 +1,7 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
 
-import { getTokenInput } from "../getTokenInput.js";
+// import { getTokenInput } from "../getTokenInput.js";
 import { packageChangeDetectorAction } from "../index.js";
 
 export async function runPackageChangeDetectorAction(
@@ -19,7 +19,7 @@ export async function runPackageChangeDetectorAction(
 	}
 
 	await packageChangeDetectorAction({
-		githubToken: getTokenInput("github-token", "GITHUB_TOKEN"),
+		// githubToken: getTokenInput("github-token", "GITHUB_TOKEN"),
 		owner: context.repo.owner,
 		properties,
 		refPrevious: after,

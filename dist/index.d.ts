@@ -1,5 +1,4 @@
 export interface PackageChangeDetectorActionOptions {
-    githubToken: string;
     owner: string;
     properties: string[];
     refPrevious: string;

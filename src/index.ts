@@ -1,9 +1,9 @@
 import * as core from "@actions/core";
-import * as github from "@actions/github";
+// import * as github from "@actions/github";
 import * as util from "node:util";
 
 export interface PackageChangeDetectorActionOptions {
-	githubToken: string;
+	// githubToken: string;
 	owner: string;
 	properties: string[];
 	refPrevious: string;
