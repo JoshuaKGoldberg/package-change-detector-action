@@ -18,7 +18,7 @@
 		"package.json"
 	],
 	"scripts": {
-		"build": "tsup",
+		"build": "tsc",
 		"build:release": "ncc build src/action/index.ts -o dist",
 		"format": "prettier .",
 		"lint": "eslint . --max-warnings 0",
@@ -69,7 +69,6 @@
 		"prettier-plugin-sh": "0.17.4",
 		"release-it": "18.1.2",
 		"sentences-per-line": "0.3.0",
-		"tsup": "8.4.0",
 		"typescript": "5.8.2",
 		"typescript-eslint": "8.26.1",
 		"vitest": "3.0.9"
