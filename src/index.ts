@@ -1,9 +1,7 @@
 import * as core from "@actions/core";
-// import * as github from "@actions/github";
 import * as util from "node:util";
 
 export interface PackageChangeDetectorActionOptions {
-	// githubToken: string;
 	owner: string;
 	properties: string[];
 	refBase: string;
@@ -29,7 +27,7 @@ export async function packageChangeDetectorAction({
 		.flatMap((property) => property.split(/\n,/))
 		.filter(Boolean);
 
-	console.log("comparing:", { properties, propertyKeys });
+	core.debug(`Will check properties: ${propertyKeys.join(", ")}`);
 
 	const changed = propertyKeys.some(
 		(propertyKey) =>

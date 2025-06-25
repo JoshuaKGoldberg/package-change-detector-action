@@ -1,5 +1,6 @@
+import type * as github from "@actions/github";
+
 import * as core from "@actions/core";
-import * as github from "@actions/github";
 
 import { packageChangeDetectorAction } from "../index.js";
 
@@ -11,8 +12,6 @@ interface PayloadData {
 export async function runPackageChangeDetectorAction(
 	context: typeof github.context,
 ) {
-	const properties = core.getMultilineInput("properties");
-
 	const payloadData = (context.payload.pull_request ??
 		context.payload.pull_request_target) as PayloadData;
 	if (typeof payloadData !== "object") {
@@ -33,6 +32,8 @@ export async function runPackageChangeDetectorAction(
 		core.setFailed("The payload head SHA must be a string.");
 		return;
 	}
+
+	const properties = core.getMultilineInput("properties");
 
 	await packageChangeDetectorAction({
 		owner: context.repo.owner,
