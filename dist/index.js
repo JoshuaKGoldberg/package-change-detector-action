@@ -29846,11 +29846,11 @@ var external_node_util_ = __nccwpck_require__(7975);
 
 // import * as github from "@actions/github";
 
-async function packageChangeDetectorAction({ owner, properties, refPrevious, refUpdated, repo, }) {
-    core.debug(`Comparing package.json at ${refPrevious} and ${refUpdated}`);
+async function packageChangeDetectorAction({ owner, properties, refBase, refHead, repo, }) {
+    core.debug(`Comparing package.json at ${refBase} and ${refHead}`);
     const [packageJsonPrevious, packageJsonUpdated] = await Promise.all([
-        getPackageJsonAt(refPrevious),
-        getPackageJsonAt(refUpdated),
+        getPackageJsonAt(refBase),
+        getPackageJsonAt(refHead),
     ]);
     const changed = properties.some((property) => !external_node_util_.isDeepStrictEqual(packageJsonPrevious[property], packageJsonUpdated[property]));
     core.setOutput("changed", changed.toString());
@@ -29868,18 +29868,29 @@ async function packageChangeDetectorAction({ owner, properties, refPrevious, ref
 
 async function runPackageChangeDetectorAction(context) {
     const properties = core.getMultilineInput("properties");
-    const { after, before } = context.payload;
-    if (typeof before !== "string" || typeof after !== "string") {
-        core.setFailed("This action can only be used in an event with 'after' and 'before' refs.");
+    const payloadData = (context.payload.pull_request ??
+        context.payload.pull_request_target);
+    if (typeof payloadData !== "object") {
+        core.setFailed("This action can only be used in a pull_request or pull_request_target event.");
         return;
     }
-    console.log({ context }, "with context.payload", context.payload);
+    const refBase = payloadData.base.sha;
+    if (typeof refBase !== "string") {
+        core.setFailed("The payload base SHA must be a string.");
+        return;
+    }
+    const refHead = payloadData.head.sha;
+    if (typeof refHead !== "string") {
+        core.setFailed("The payload head SHA must be a string.");
+        return;
+    }
+    console.log({ context, refBase, refHead }, "with context.payload", context.payload);
     await packageChangeDetectorAction({
         // githubToken: getTokenInput("github-token", "GITHUB_TOKEN"),
         owner: context.repo.owner,
         properties,
-        refPrevious: after,
-        refUpdated: before,
+        refBase,
+        refHead,
         repo: context.repo.repo,
     });
 }

@@ -6,23 +6,23 @@ export interface PackageChangeDetectorActionOptions {
 	// githubToken: string;
 	owner: string;
 	properties: string[];
-	refPrevious: string;
-	refUpdated: string;
+	refBase: string;
+	refHead: string;
 	repo: string;
 }
 
 export async function packageChangeDetectorAction({
 	owner,
 	properties,
-	refPrevious,
-	refUpdated,
+	refBase,
+	refHead,
 	repo,
 }: PackageChangeDetectorActionOptions) {
-	core.debug(`Comparing package.json at ${refPrevious} and ${refUpdated}`);
+	core.debug(`Comparing package.json at ${refBase} and ${refHead}`);
 
 	const [packageJsonPrevious, packageJsonUpdated] = await Promise.all([
-		getPackageJsonAt(refPrevious),
-		getPackageJsonAt(refUpdated),
+		getPackageJsonAt(refBase),
+		getPackageJsonAt(refHead),
 	]);
 
 	const changed = properties.some(
