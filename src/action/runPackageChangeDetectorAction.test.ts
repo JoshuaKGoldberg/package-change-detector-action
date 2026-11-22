@@ -2,7 +2,7 @@ import type * as github from "@actions/github";
 
 import { describe, expect, it, vi } from "vitest";
 
-import { runPackageChangeDetectorAction } from "./runPackageChangeDetectorAction.js";
+import { runPackageChangeDetectorAction } from "./runPackageChangeDetectorAction.ts";
 
 const mockGetMultilineInput = vi.fn();
 const mockSetFailed = vi.fn();
@@ -18,7 +18,7 @@ vi.mock("@actions/core", () => ({
 
 const mockPackageChangeDetectorAction = vi.fn();
 
-vi.mock("../index.js", () => ({
+vi.mock("../index.ts", () => ({
 	get packageChangeDetectorAction() {
 		return mockPackageChangeDetectorAction;
 	},

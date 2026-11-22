@@ -29844,7 +29844,6 @@ var core = __nccwpck_require__(9999);
 var external_node_util_ = __nccwpck_require__(7975);
 ;// CONCATENATED MODULE: ./src/index.ts
 
-// import * as github from "@actions/github";
 
 async function packageChangeDetectorAction({ owner, properties, refBase, refHead, repo, }) {
     core.debug(`Comparing package.json at ${refBase} and ${refHead}`);
@@ -29855,7 +29854,7 @@ async function packageChangeDetectorAction({ owner, properties, refBase, refHead
     const propertyKeys = properties
         .flatMap((property) => property.split(/\n,/))
         .filter(Boolean);
-    console.log("comparing:", { properties, propertyKeys });
+    core.debug(`Will check properties: ${propertyKeys.join(", ")}`);
     const changed = propertyKeys.some((propertyKey) => !external_node_util_.isDeepStrictEqual(packageJsonPrevious[propertyKey], packageJsonUpdated[propertyKey]));
     core.setOutput("changed", changed.toString());
     async function getPackageJsonAt(ref) {
@@ -29870,7 +29869,6 @@ async function packageChangeDetectorAction({ owner, properties, refBase, refHead
 
 
 async function runPackageChangeDetectorAction(context) {
-    const properties = core.getMultilineInput("properties");
     const payloadData = (context.payload.pull_request ??
         context.payload.pull_request_target);
     if (typeof payloadData !== "object") {
@@ -29887,6 +29885,7 @@ async function runPackageChangeDetectorAction(context) {
         core.setFailed("The payload head SHA must be a string.");
         return;
     }
+    const properties = core.getMultilineInput("properties");
     await packageChangeDetectorAction({
         owner: context.repo.owner,
         properties,

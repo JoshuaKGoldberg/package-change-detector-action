@@ -2,7 +2,7 @@ import type * as github from "@actions/github";
 
 import * as core from "@actions/core";
 
-import { packageChangeDetectorAction } from "../index.js";
+import { packageChangeDetectorAction } from "../index.ts";
 
 interface PayloadData {
 	base: Record<string, unknown>;
