@@ -21,7 +21,7 @@
 		"lib/"
 	],
 	"scripts": {
-		"build": "tsc",
+		"build": "tsc --project tsconfig.build.json",
 		"build:release": "rm -rf dist && ncc build src/action/index.ts -o dist",
 		"format": "prettier .",
 		"lint": "eslint . --max-warnings 0",
