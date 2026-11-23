@@ -27,7 +27,7 @@ It will populate an `outputs.changed` value indicating whether specific `package
 runs:
   steps:
     - id: package-change
-      uses: JoshuaKGoldberg/package-change-detector-action@0.0.0
+      uses: JoshuaKGoldberg/package-change-detector-action@v0.0.1
       with:
         properties: engines
     - run: echo "${{ steps.package-change.outputs.changed }}"
