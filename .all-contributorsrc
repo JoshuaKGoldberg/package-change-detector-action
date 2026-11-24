@@ -26,6 +26,5 @@
   ],
   "projectName": "package-change-detector-action",
   "projectOwner": "JoshuaKGoldberg",
-  "repoType": "github",
-  "commitConvention": "angular"
+  "repoType": "github"
 }

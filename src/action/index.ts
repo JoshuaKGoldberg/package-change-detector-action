@@ -1,5 +1,5 @@
 import * as github from "@actions/github";
 
-import { runPackageChangeDetectorAction } from "./runPackageChangeDetectorAction.js";
+import { runPackageChangeDetectorAction } from "./runPackageChangeDetectorAction.ts";
 
 await runPackageChangeDetectorAction(github.context);

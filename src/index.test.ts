@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { packageChangeDetectorAction } from "./index.js";
+import { packageChangeDetectorAction } from "./index.ts";
 
 const mockDebug = vi.fn();
 const mockSetOutput = vi.fn();
