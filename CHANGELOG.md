@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.2](https://github.com/JoshuaKGoldberg/package-change-detector-action/compare/v0.0.1...v0.0.2) (2026-11-24)
+
+### Bug Fixes
+
+- bump to create-typescript-app@2.87.18 ([#32](https://github.com/JoshuaKGoldberg/package-change-detector-action/issues/32)) ([fb3d328](https://github.com/JoshuaKGoldberg/package-change-detector-action/commit/fb3d328195a7cb86c025c86784b641027fadae87)), closes [#31](https://github.com/JoshuaKGoldberg/package-change-detector-action/issues/31), references [#30](https://github.com/JoshuaKGoldberg/package-change-detector-action/issues/30)
+
 ## [0.0.1](https://github.com/JoshuaKGoldberg/package-change-detector-action/compare/v0.0.0...v0.0.1) (2025-06-25)
 
 ### Bug Fixes
